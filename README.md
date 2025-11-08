@@ -22,14 +22,50 @@ Para este projeto, foram selecionados **4 exercícios** que representam diferent
 | Exercício                                                                                                     | Dificuldade | Método de Busca |
 | ------------------------------------------------------------------------------------------------------------- | ----------- | --------------- |
 | [1382. Balance a Binary Search Tree](https://leetcode.com/problems/balance-a-binary-search-tree/description/) | Médio       | Árvore AVL      |
+| [327. Count of Range Sum](https://leetcode.com/problems/count-of-range-sum/description/) | Difícil | Árvore Red Black |
 
 ## Exercícios Desenvolvidos
 
 ### 1382. Balance a Binary Search Tree
 
-**Conceito**: Este problema explora a ordenação de arrays de inteiros utilizando o algoritmo Radix Sort, que ordena os elementos dígito por dígito através de counting sort como sub-rotina.
+**Conceito**:
+
+O problema consiste em receber uma árvore binária de busca (BST) desbalanceada e transformá-la em uma árvore balanceada mantendo os mesmos valores. Uma árvore é considerada balanceada quando a diferença de altura entre as subárvores esquerda e direita de qualquer nó nunca é maior que 1.
+
+**Ideia da Solução com Árvore AVL**:
+
+A abordagem utilizada segue dois passos principais:
+1. **Percurso In-Order**: Realiza um percurso in-order na árvore original para extrair todos os valores em ordem crescente (propriedade de uma BST).
+2. **Construção Balanceada**: Utiliza o array ordenado para construir recursivamente uma nova árvore, sempre escolhendo o elemento do meio como raiz, garantindo que as subárvores esquerda e direita tenham tamanhos aproximadamente iguais.
+
+Esta técnica garante que a árvore resultante seja completamente balanceada, seguindo os princípios de uma Árvore AVL, onde a diferença de altura entre subárvores nunca excede 1.
 
 ![Resultados do Exercicio 1382](./Assets/1382_BalanceABinarySearchTree.png)
+
+### 327. Count of Range Sum
+
+**Conceito**:
+
+O problema solicita contar quantos intervalos contíguos de um array possuem soma dentro de um intervalo específico `[lower, upper]`. Para cada par de índices `i` e `j` (onde `i ≤ j`), precisamos verificar se a soma dos elementos entre `i` e `j` está dentro do intervalo permitido.
+
+**Ideia da Solução com Árvore Red-Black**:
+
+A solução utiliza o conceito de **somas de prefixo** combinado com uma **Árvore Red-Black** para otimizar as consultas:
+
+1. **Somas de Prefixo**: Calculamos a soma acumulada até cada posição. A soma de um intervalo `[i, j]` pode ser obtida por `prefixSum[j] - prefixSum[i-1]`.
+
+2. **Árvore Red-Black**: Mantém as somas de prefixo anteriores em uma estrutura balanceada que permite:
+   - Inserções em O(log n)
+   - Consultas de intervalo em O(log n)
+   - Contagem de quantas somas anteriores satisfazem a condição `prefixSum[atual] - upper ≤ prefixSum[anterior] ≤ prefixSum[atual] - lower`
+
+3. **Balanceamento Automático**: A Árvore Red-Black utiliza rotações e mudanças de cores para manter o balanceamento, garantindo que todas as operações sejam eficientes mesmo com inserções sequenciais.
+
+A implementação inclui uma árvore Red-Black completa com todas as propriedades necessárias: nós coloridos (vermelho/preto), rotações (esquerda e direita), flip de cores, e contagem eficiente de elementos em intervalos.
+
+**Desempenho**: A solução obteve **183ms** de tempo de execução, apresentando uma queda considerável em relação à média ideal de **163ms-166ms**. O intuito do exercício era demonstrar o uso de árvores balanceadas (Red-Black) para resolver problemas de contagem de intervalos, embora existam algoritmos mais otimizados como Merge Sort com contagem ou Árvores de Segmento que podem oferecer melhor desempenho na prática.
+
+![Resultados do Exercicio 327](./Assets/327_CountOfRangeSum.png)
 
 ## Como Validar os Exercícios
 
