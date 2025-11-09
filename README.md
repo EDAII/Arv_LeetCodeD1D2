@@ -67,6 +67,41 @@ A implementação inclui uma árvore Red-Black completa com todas as propriedade
 
 ![Resultados do Exercicio 327](./Assets/327_CountOfRangeSum.png)
 
+## 109. Convert Sorted List to Binary Search Tree
+
+**Conceito**:
+
+O problema pede para converter uma lista ligada (singly-linked list), que já se encontra ordenada em ordem crescente, em uma Árvore de Busca Binária (BST) que seja balanceada em altura.
+
+A restrição de "balanceada em altura" é a definição exata de uma Árvore AVL: uma BST onde, para qualquer nó, as alturas de suas duas sub-árvores (esquerda e direita) diferem em no máximo 1. O objetivo é criar essa árvore de forma eficiente a partir dos dados já ordenados.
+
+**Ideia da solução com árvore AVL**:
+
+Como os dados de entrada já estão ordenados, não precisamos usar a lógica de inserção padrão de uma AVL (que envolve inserções seguidas de rotações para corrigir o desbalanceamento).
+
+Em vez disso, usamos uma abordagem de Construção Direta (Dividir e Conquistar) que constrói a árvore já perfeitamente balanceada desde o início, garantindo a propriedade AVL.
+
+1. **Conversão para array**: O primeiro passo do código é percorrer a lista ligada (onde o acesso a um elemento no meio é lento, O(n)) e copiar todos os seus valores para um array (valores). Isso nos dá acesso O(1) (tempo constante) a qualquer elemento pelo seu índice.
+
+2. **Construção Recursiva (Dividir e Conquistar)**: O código usa uma função auxiliar construirArvoreDoArray que recebe os índices inicio e fim do sub-array que ela deve transformar em uma (sub)árvore.
+
+3. **Escolha da Raiz (Ponto-Médio)**: A cada chamada recursiva, a função calcula o índice do meio (indiceDoMeio) do sub-array. O valor nesse índice é escolhido para ser a raiz da (sub)árvore.
+
+- let raiz = new TreeNode(valores[indiceDoMeio]);
+
+**Balanceamento**:
+
+1. A sub-árvore esquerda (raiz.left) é construída recursivamente usando a metade esquerda do array (todos os elementos antes do meio: inicio até indiceDoMeio - 1).
+
+2. A sub-árvore direita (raiz.right) é construída recursivamente usando a metade direita do array (todos os elementos depois do meio: indiceDoMeio + 1 até fim).
+
+Esse processo de "Dividir e Conquistar", sempre escolhendo o ponto médio como raiz, garante que, para qualquer nó, o número de descendentes à esquerda e à direita seja o mais próximo possível. Isso resulta em uma árvore com a altura mínima (O(logn)), satisfazendo perfeitamente a definição de uma Árvore AVL.
+
+**Desempenho**:
+
+A solução tem uma complexidade de tempo total de O(n), onde n é o número de nós.
+
+![Resultados do Exercicio 109](./Assets/109_ConvertSortedListToBinarySearchTree.png)
 ## Como Validar os Exercícios
 
 Para verificar a corretude das implementações, siga estes passos:
