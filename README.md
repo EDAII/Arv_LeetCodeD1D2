@@ -22,7 +22,9 @@ Para este projeto, foram selecionados **4 exercícios** que representam diferent
 | Exercício                                                                                                     | Dificuldade | Método de Busca |
 | ------------------------------------------------------------------------------------------------------------- | ----------- | --------------- |
 | [1382. Balance a Binary Search Tree](https://leetcode.com/problems/balance-a-binary-search-tree/description/) | Médio       | Árvore AVL      |
+| [109. Convert Sorted List to Binary Search Tree](https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/description/) | Médio       | Árvore AVL      |
 | [327. Count of Range Sum](https://leetcode.com/problems/count-of-range-sum/description/) | Difícil | Árvore Red Black |
+| [732. My Calendar III](https://leetcode.com/problems/my-calendar-iii/description/) | Difícil | Árvore Red Black |
 
 ## Exercícios Desenvolvidos
 
@@ -102,6 +104,41 @@ Esse processo de "Dividir e Conquistar", sempre escolhendo o ponto médio como r
 A solução tem uma complexidade de tempo total de O(n), onde n é o número de nós.
 
 ![Resultados do Exercicio 109](./Assets/109_ConvertSortedListToBinarySearchTree.png)
+
+## 732. My Calendar III
+
+732. My Calendar III
+
+**Conceito**:
+
+O problema pede para encontrar, após cada agendamento, o número máximo de eventos sobrepostos (k-booking) que existem em qualquer ponto no tempo. Por exemplo, se três eventos se sobrepõem entre as 10:00 e as 10:30, o k-booking máximo é pelo menos 3.
+
+**Ideia da Solução com Árvore Red-Black (Algoritmo "Sweep Line")**:
+
+A solução não armazena os intervalos em si. Em vez disso, ela usa a Árvore Red-Black para implementar um algoritmo de "Sweep Line" (Linha de Varredura), que é muito eficiente.
+
+1. **Pontos de Fronteira (Delta)**: A ideia central é que um evento `[start, end)` (que não inclui end) aumenta o número de sobreposições em +1 no tempo start e diminui o número de sobreposições em -1 no tempo end.
+
+- book(10, 20): Adiciona (tempo: 10, delta: +1) e (tempo: 20, delta: -1).
+
+- book(10, 40): Adiciona (tempo: 10, delta: +1) e (tempo: 40, delta: -1).
+
+2. **Árvore Red-Black como "Sorted Map"**: Usamos a Árvore Red-Black para armazenar esses pontos de fronteira.
+
+- Chave: O tempo (ex: 10, 20, 40).
+- Valor: O delta (a mudança no número de sobreposições).
+- Se uma chave (tempo) já existe na árvore, nós simplesmente somamos o novo delta ao valor existente. (Ex: inserir (10, +1) duas vezes resulta em um nó (chave: 10, valor: +2)).
+
+3. **Balanceamento**: A Árvore Red-Black é obrigatória aqui porque, à medida que inserimos esses pontos de tempo (chaves), ela garante que a árvore permaneça balanceada. Isso mantém o custo de cada inserção (put) em O(log n), que é crucial. Sem o balanceamento (como em uma BST simples), as inserções poderiam degenerar para O(n).
+
+4. **Cálculo do K-Máximo (A "Varredura")**: Após cada chamada book (que adiciona dois nós ou atualiza dois valores), o código calcula o k-máximo. Ele faz isso realizando uma travessia em-ordem (in-order) da árvore.
+
+- Como a árvore armazena as chaves (tempo) de forma ordenada, uma travessia em-ordem "varre" a linha do tempo da esquerda para a direita.
+- Mantemos uma soma kAtual. Ao visitar cada nó na travessia, somamos seu valor (delta) ao kAtual.
+- O kMaximo é o maior valor que kAtual atinge durante essa travessia.
+
+![Resultados do Exercicio 731](./Assets/732_MyCalendarIII.png)
+
 ## Como Validar os Exercícios
 
 Para verificar a corretude das implementações, siga estes passos:
@@ -130,3 +167,10 @@ Para verificar a corretude das implementações, siga estes passos:
 1. **LeetCode Platform** - [https://leetcode.com/](https://leetcode.com/)
    - Plataforma principal utilizada para obtenção dos exercícios e validação das soluções
    - Fonte dos enunciados, que se encontram comantados nos arquivos de código.
+2. **GeeksforGeeks - AVL Tree** - [https://www.geeksforgeeks.org/avl-tree-set-1-insertion/](https://www.geeksforgeeks.org/avl-tree-set-1-insertion/)
+
+   - Recurso de consulta para o conceito de Árvores AVL, detalhando a lógica de inserção, o cálculo do fator de balanceamento e as rotações (Simples e Duplas).
+
+3. **GeeksforGeeks** - Red-Black Tree - [https://www.geeksforgeeks.org/red-black-tree/](https://www.geeksforgeeks.org/red-black-tree/)
+
+   - Material de apoio para a implementação de Árvores Red-Black, explicando as propriedades fundamentais (regras de cor) e as operações de correção (rotações e "flip colors").
